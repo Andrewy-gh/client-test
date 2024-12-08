@@ -1,0 +1,159 @@
+---
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+
+interface Item {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+}
+
+const items: Item[] = [
+  {
+    id: 1,
+    title: 'Item 1',
+    description: 'This is a detailed description for Item 1.',
+    imageUrl: 'https://picsum.photos/300/200?random=1',
+  },
+  {
+    id: 2,
+    title: 'Item 2',
+    description: "Here's what you need to know about Item 2.",
+    imageUrl: 'https://picsum.photos/300/200?random=2',
+  },
+  {
+    id: 3,
+    title: 'Item 3',
+    description: 'Item 3 has its own story.',
+    imageUrl: 'https://picsum.photos/300/200?random=3',
+  },
+  {
+    id: 4,
+    title: 'Item 4',
+    description: 'Discover the features of Item 4.',
+    imageUrl: 'https://picsum.photos/300/200?random=4',
+  },
+  {
+    id: 5,
+    title: 'Item 5',
+    description: 'Item 5 stands out for these reasons.',
+    imageUrl: 'https://picsum.photos/300/200?random=5',
+  },
+  {
+    id: 6,
+    title: 'Item 6',
+    description: 'Last but not least, Item 6 has its own unique qualities.',
+    imageUrl: 'https://picsum.photos/300/200?random=6',
+  },
+];
+---
+
+<div class="container mx-auto p-4">
+  <div class="flex justify-end mb-4">
+    <Button
+      id="viewToggle"
+      variant="outline"
+      size="sm"
+      className="flex items-center gap-2"
+    >
+      <span id="viewIcon" class="w-4 h-4"></span>
+      <span id="viewText">Grid View</span>
+    </Button>
+  </div>
+
+  <div
+    id="itemContainer"
+    class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+  >
+    {
+      items.map((item) => (
+        <Card className="overflow-hidden">
+          <div class="p-4">
+            <h3 class="text-lg font-semibold mb-2">{item.title}</h3>
+            <div class="grid-view">
+              <img
+                src={item.imageUrl}
+                alt={item.title}
+                class="w-full h-48 object-cover rounded-md mb-4"
+              />
+            </div>
+            <p class="text-sm text-gray-600">{item.description}</p>
+          </div>
+          <div class="flex justify-end p-4 bg-gray-50 button-container">
+            <Button variant="outline" size="sm">
+              Favorite
+            </Button>
+            <Button variant="outline" size="sm">
+              Delete
+            </Button>
+            <Button variant="outline" size="sm">
+              Tag
+            </Button>
+            <Button variant="outline" size="sm">
+              Archive
+            </Button>
+          </div>
+        </Card>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .button-container > :global(button) {
+    margin-left: 1rem;
+  }
+
+  .button-container > :global(button:first-child) {
+    margin-left: 0;
+  }
+
+  @media (max-width: 640px) {
+    .button-container {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .button-container > :global(button) {
+      margin-left: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  const viewToggle = document.getElementById('viewToggle');
+  const viewIcon = document.getElementById('viewIcon');
+  const viewText = document.getElementById('viewText');
+  const itemContainer = document.getElementById('itemContainer');
+  const gridViews = document.querySelectorAll('.grid-view');
+
+  let isListView = false;
+
+  if (viewToggle && itemContainer && viewIcon && viewText) {
+    viewToggle.addEventListener('click', () => {
+      isListView = !isListView;
+
+      if (isListView) {
+        viewIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>`;
+        viewText.textContent = 'List View';
+      } else {
+        viewIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>`;
+        viewText.textContent = 'Grid View';
+      }
+
+      itemContainer.classList.toggle('md:grid-cols-2');
+      itemContainer.classList.toggle('lg:grid-cols-3');
+
+      gridViews.forEach((view) => {
+        view.classList.toggle('hidden');
+      });
+    });
+  }
+</script>
